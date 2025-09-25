@@ -23,7 +23,6 @@ pipeline {
         stage('Install Docker CLI') {
             steps {
                 echo 'Installing Docker CLI...'
-                sh 'apt-get update'
                 sh 'apt-get install -y docker.io'
             }
         }
