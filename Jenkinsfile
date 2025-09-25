@@ -19,7 +19,7 @@ pipeline {
 
      stages {
 
-        Install Docker CLI in Node 16 as it is the build agent
+        //Install Docker CLI in Node 16 as it is the build agent
         stage('Install Docker CLI') {
             steps {
                 echo 'Installing Docker CLI...'
