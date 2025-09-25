@@ -19,14 +19,14 @@ pipeline {
 
      stages {
 
-        //Install Docker CLI in Node 16 as it is the build agent
-        // stage('Install Docker CLI') {
-        //     steps {
-        //         echo 'Installing Docker CLI...'
-        //         sh 'apt-get update'
-        //         sh 'apt-get install -y docker.io'
-        //     }
-        // }
+        Install Docker CLI in Node 16 as it is the build agent
+        stage('Install Docker CLI') {
+            steps {
+                echo 'Installing Docker CLI...'
+                sh 'apt-get update'
+                sh 'apt-get install -y docker.io'
+            }
+        }
 
 
         //Install node dependencies to prior to build
@@ -59,7 +59,6 @@ pipeline {
 
         //Build docker image
         stage('Build Docker Image') {
-            agent any
             steps {
                 echo 'Building Docker image...'
                 sh "docker build -t ${IMAGE_TAG} ."
@@ -68,7 +67,6 @@ pipeline {
 
         //Push docker image to dockerhub
         stage('Push Docker Image') {
-            agent any
             steps {
                 echo 'Pushing Docker image to registry...'
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
