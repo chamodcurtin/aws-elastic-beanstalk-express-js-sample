@@ -37,6 +37,7 @@ pipeline {
             steps {
                 echo 'Scanning dependencies for vulnerabilities with Snyk...'
                 withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
+                    sh 'npm install -g snyk'
                     sh 'snyk auth $SNYK_TOKEN'
                     sh 'snyk test --severity-threshold=high'
                 }
