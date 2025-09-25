@@ -3,7 +3,7 @@ pipeline {
     agent {
         docker {
             image 'node:16-bullseye'        // Use Node 16 as the build agent
-            args '-u root:root -v /var/jenkins_home/docker-certs-client:/certs/client:ro'    // Run as root to avoid permission issues
+            args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'    // Run as root to avoid permission issues
         }
     }
 
