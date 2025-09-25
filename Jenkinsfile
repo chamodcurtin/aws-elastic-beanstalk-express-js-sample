@@ -49,7 +49,7 @@ pipeline {
 
         //Build docker image
         stage('Build Docker Image') {
-            agent { label 'master' }   // Run on Jenkins container
+            agent any   // Run on Jenkins container
             steps {
                 echo 'Building Docker image...'
                 sh "docker build -t ${IMAGE_TAG} ."
@@ -58,7 +58,7 @@ pipeline {
 
         //Push docker image to dockerhub
         stage('Push Docker Image') {
-            agent { label 'master' }   // Run on Jenkins container
+            agent any   // Run on Jenkins container
             steps {
                 echo 'Pushing Docker image to registry...'
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
