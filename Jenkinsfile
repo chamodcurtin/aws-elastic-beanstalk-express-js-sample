@@ -2,7 +2,7 @@ pipeline {
 
     agent {
         docker {
-            image 'node:16'        // Use Node 16 as the build agent
+            image 'node:16-bullseye'        // Use Node 16 as the build agent
             args '-u root:root'    // Run as root to avoid permission issues
         }
     }
@@ -18,6 +18,16 @@ pipeline {
     }
 
      stages {
+
+        //Install Docker CLI in Node 16 as it is the build agent
+        stage('Install Docker CLI') {
+            steps {
+                echo 'Installing Docker CLI...'
+                sh 'sudo apt-get update'
+                sh 'apt-get install -y docker.io'
+            }
+        }
+
 
         //Install node dependencies to prior to build
         stage('Install Dependencies') {
@@ -49,7 +59,6 @@ pipeline {
 
         //Build docker image
         stage('Build Docker Image') {
-            agent any   // Run on Jenkins container
             steps {
                 echo 'Building Docker image...'
                 sh "docker build -t ${IMAGE_TAG} ."
@@ -58,7 +67,6 @@ pipeline {
 
         //Push docker image to dockerhub
         stage('Push Docker Image') {
-            agent any   // Run on Jenkins container
             steps {
                 echo 'Pushing Docker image to registry...'
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
