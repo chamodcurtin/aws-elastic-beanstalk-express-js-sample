@@ -45,6 +45,7 @@ pipeline {
 
         //Build docker image
         stage('Build Docker Image') {
+            agent any
             steps {
                 echo 'Building Docker image...'
                 sh "docker build -t ${IMAGE_TAG} ."
@@ -53,6 +54,7 @@ pipeline {
 
         //Push docker image to dockerhub
         stage('Push Docker Image') {
+            agent any
             steps {
                 echo 'Pushing Docker image to registry...'
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
