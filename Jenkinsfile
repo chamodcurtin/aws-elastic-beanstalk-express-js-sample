@@ -3,7 +3,7 @@ pipeline {
     agent {
         docker {
             image 'node:16-bullseye'        // Use Node 16 as the build agent
-            args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock --privileged'    // Run as root to avoid permission issues
+            args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'    // Run as root to avoid permission issues
         }
     }
 
@@ -20,13 +20,13 @@ pipeline {
      stages {
 
         //Install Docker CLI in Node 16 as it is the build agent
-        stage('Install Docker CLI') {
-            steps {
-                echo 'Installing Docker CLI...'
-                sh 'apt-get update'
-                sh 'apt-get install -y docker.io'
-            }
-        }
+        // stage('Install Docker CLI') {
+        //     steps {
+        //         echo 'Installing Docker CLI...'
+        //         sh 'apt-get update'
+        //         sh 'apt-get install -y docker.io'
+        //     }
+        // }
 
 
         //Install node dependencies to prior to build
