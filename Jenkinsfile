@@ -2,14 +2,13 @@ pipeline {
 
     agent {
         docker {
-            image 'node:16-bullseye'        // Use Node 16 as the build agent
+            image 'node:16'        // Use Node 16 as the build agent
             args '-u root:root'    // Run as root to avoid permission issues
             reuseNode true
         }
     }
 
     environment {
-        // environment vaariables
         DOCKER_REGISTRY = 'chamodkw19739335'
         APP_NAME = 'aws-elastic-beanstalk-express-js-sample'
         IMAGE_TAG = "${DOCKER_REGISTRY}/${APP_NAME}:latest"
@@ -19,16 +18,6 @@ pipeline {
     }
 
      stages {
-
-        //Install Docker CLI in Node 16 as it is the build agent
-        // stage('Install Docker CLI') {
-        //     steps {
-        //         echo 'Installing Docker CLI...'
-        //         sh 'apt-get update'
-        //         sh 'apt-get install -y docker.io'
-        //     }
-        // }
-
 
         //Install node dependencies to prior to build
         stage('Install Dependencies') {
