@@ -10,13 +10,6 @@ pipeline {
         DOCKER_TLS_VERIFY = '1'
         DOCKER_CERT_PATH = '/certs/client'
     }
-
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '10')) // Keep last 10 builds
-        timestamps() // Add timestamps to console output
-        ansiColor('xterm') // Colorize console output
-        timeout(time: 30, unit: 'MINUTES') // Build timeout
-    }
     
      stages {
         stage('Install Dependencies') {
