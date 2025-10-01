@@ -4,6 +4,7 @@ pipeline {
         docker {
             image 'node:16-bullseye'        // Use Node 16 as the build agent
             args '-u root:root'    // Run as root to avoid permission issues
+            reuseNode true
         }
     }
 
