@@ -1,11 +1,6 @@
 pipeline {
 
-    agent {
-        docker {
-            image 'node:16'        
-            args '-u root:root'
-        }
-    }
+    agent any
 
     environment {
         DOCKER_REGISTRY = 'chamodkw19739335'
@@ -18,6 +13,13 @@ pipeline {
 
      stages {
         stage('Install Dependencies') {
+            agent {
+                docker {
+                    image 'node:16'        
+                    args '-u root:root'
+                    reuseNode true
+                }
+            }
             steps {
                 echo 'Installing Node.js dependencies...'
                 sh 'npm install --save'
@@ -26,6 +28,13 @@ pipeline {
 
 
         stage('Run Unit Tests') {
+            agent {
+                docker {
+                    image 'node:16'        
+                    args '-u root:root'
+                    reuseNode true
+                }
+            }
             steps {
                 echo 'Running unit tests...'
                 sh 'npm test'
@@ -33,6 +42,13 @@ pipeline {
         }
 
         stage('Security Scan') {
+            agent {
+                docker {
+                    image 'node:16'        
+                    args '-u root:root'
+                    reuseNode true
+                }
+            }
             steps {
                 echo 'Scanning dependencies for vulnerabilities with Snyk...'
                 withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
@@ -45,7 +61,6 @@ pipeline {
 
         //Build docker image
         stage('Build Docker Image') {
-            agent any
             steps {
                 echo 'Building Docker image...'
                 sh "docker build -t ${IMAGE_TAG} ."
@@ -54,7 +69,6 @@ pipeline {
 
         //Push docker image to dockerhub
         stage('Push Docker Image') {
-            agent any
             steps {
                 echo 'Pushing Docker image to registry...'
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
