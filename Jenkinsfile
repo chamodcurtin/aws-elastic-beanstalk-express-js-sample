@@ -2,9 +2,8 @@ pipeline {
 
     agent {
         docker {
-            image 'node:16'        // Use Node 16 as the build agent
-            args '-u root:root'    // Run as root to avoid permission issues
-            reuseNode true
+            image 'node:16'        
+            args '-u root:root'
         }
     }
 
@@ -18,8 +17,6 @@ pipeline {
     }
 
      stages {
-
-        //Install node dependencies to prior to build
         stage('Install Dependencies') {
             steps {
                 echo 'Installing Node.js dependencies...'
@@ -27,7 +24,7 @@ pipeline {
             }
         }
 
-        //Run unit tests
+
         stage('Run Unit Tests') {
             steps {
                 echo 'Running unit tests...'
@@ -35,7 +32,6 @@ pipeline {
             }
         }
 
-        //Run security scan of the dependencies vulns
         stage('Security Scan') {
             steps {
                 echo 'Scanning dependencies for vulnerabilities with Snyk...'
@@ -59,9 +55,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 echo 'Pushing Docker image to registry...'
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
-                                                 usernameVariable: 'DOCKER_USER',
-                                                 passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
                     sh "docker push ${IMAGE_TAG}"
                 }
